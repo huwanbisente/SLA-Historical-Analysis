@@ -39,7 +39,7 @@ def run_voice_dashboard():
         df = load_with_period_tag()
 
         # --- Parse date and time fields ---
-        df['DATE'] = pd.to_datetime(df['DATE'], dayfirst=True)
+        df['DATE'] = pd.to_datetime(df['DATE'], format='mixed', dayfirst=True, errors='coerce')
 
         # Convert time strings to seconds
         df['QUEUE_TIME (s)'] = df['Average QUEUE WAIT TIME'].astype(str).apply(to_seconds)
