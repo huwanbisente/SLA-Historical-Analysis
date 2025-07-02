@@ -38,7 +38,7 @@ def run_voice_dashboard():
         df = load_with_period_tag()
 
         # --- Parse date with fallback ---
-        df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce', format='mixed')
+        df['DATE'] = pd.to_datetime(df['DATE'], format='mixed', dayfirst=True, errors='coerce')
         df.dropna(subset=['DATE'], inplace=True)
 
         # Convert time strings to seconds
