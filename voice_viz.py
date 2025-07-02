@@ -38,8 +38,9 @@ def run_voice_dashboard():
         df = load_with_period_tag()
 
         # --- Parse date with fallback ---
-        df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce', dayfirst=True)
-        df = df.dropna(subset=['DATE'])  # Drop rows with invalid dates
+        df['DATE'] = pd.to_datetime(df['DATE'], dayfirst=True)
+        #df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce', dayfirst=True)
+        #df = df.dropna(subset=['DATE'])  # Drop rows with invalid dates
 
         # Convert time strings to seconds
         df['QUEUE_TIME (s)'] = df['Average QUEUE WAIT TIME'].astype(str).apply(to_seconds)
