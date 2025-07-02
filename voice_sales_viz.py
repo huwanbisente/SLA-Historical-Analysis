@@ -33,13 +33,14 @@ def run_voice_sales_dashboard():
         return pd.concat([df_now, df_before], ignore_index=True)
 
     # --- Start of App ---
-    st.title("📞 SLA Voice Hourly Dashboard")
+    st.title("📞 SLA Voice Sales Hourly Dashboard")
 
     try:
         df = load_with_period_tag()
 
         # --- Parse date and time fields ---
         df['DATE'] = pd.to_datetime(df['DATE'], format='mixed', dayfirst=True, errors='coerce')
+        df = df.dropna(subset=['DATE'])
 
         # Convert time strings to seconds
         df['QUEUE_TIME (s)'] = df['Average QUEUE WAIT TIME'].astype(str).apply(to_seconds)
@@ -140,58 +141,39 @@ def run_voice_sales_dashboard():
         # --- Abandonment Trend
         st.markdown("### ❌ Abandonment % Trend")
         fig_abd = px.line(
-            daily,
-            x='DATE',
-            y='% ABANDONED',
-            color='PERIOD',
-            markers=True,
-            title="Abandonment Rate Over Time",
-            width=1000
+            daily, x='DATE', y='% ABANDONED', color='PERIOD',
+            markers=True, title="Abandonment Rate Over Time", width=1000
         )
         st.plotly_chart(fig_abd, use_container_width=False)
 
         # --- Average ACW Trend
         st.markdown("### 🧾 Average ACW Trend")
         fig_acw = px.line(
-            daily,
-            x='DATE',
-            y='AVG_ACW',
-            color='PERIOD',
-            title="ACW Trend Over Time",
-            markers=True,
-            labels={'AVG_ACW': 'ACW (s)'},
-            width=1000
+            daily, x='DATE', y='AVG_ACW', color='PERIOD',
+            title="ACW Trend Over Time", markers=True,
+            labels={'AVG_ACW': 'ACW (s)'}, width=1000
         )
         st.plotly_chart(fig_acw, use_container_width=False)
 
         # --- Service Level Trend
         st.markdown("### 🎯 Service Level Trend")
         fig_slvl = px.line(
-            daily,
-            x='DATE',
-            y='AVG_SLVL',
-            color='PERIOD',
-            title="Service Level (%) Over Time",
-            markers=True,
-            width=1000
+            daily, x='DATE', y='AVG_SLVL', color='PERIOD',
+            title="Service Level (%) Over Time", markers=True, width=1000
         )
         st.plotly_chart(fig_slvl, use_container_width=False)
 
         # --- Volume Heatmap by Hour and Weekday
         st.markdown("### 🔥 Call Volume Heatmap by Hour and Weekday")
         heat_df = df_filtered.groupby(['PERIOD', 'WEEKDAY', 'HOUR'])['CALLS'].sum().reset_index()
-
         for period in heat_df['PERIOD'].unique():
             st.markdown(f"#### 📅 {period} Period")
             fig_heat = px.density_heatmap(
                 heat_df[heat_df['PERIOD'] == period],
-                x='HOUR',
-                y='WEEKDAY',
-                z='CALLS',
+                x='HOUR', y='WEEKDAY', z='CALLS',
                 color_continuous_scale='Blues',
                 title=f"{period} - Calls by Hour & Day",
-                width=1000,
-                height=500
+                width=1000, height=500
             )
             st.plotly_chart(fig_heat, use_container_width=False)
 
@@ -199,7 +181,6 @@ def run_voice_sales_dashboard():
         st.markdown("### 📊 Total vs Abandoned Calls per Day (Stacked View)")
         stack_df = daily.copy()
         stack_df['Non-Abandoned Calls'] = stack_df['TOTAL_CALLS'] - stack_df['ABANDONED']
-
         stack_df = stack_df.melt(
             id_vars=['DATE', 'PERIOD'],
             value_vars=['ABANDONED', 'Non-Abandoned Calls'],
@@ -207,23 +188,17 @@ def run_voice_sales_dashboard():
             value_name='Count'
         )
         stack_df['ColorKey'] = stack_df['PERIOD'] + ' - ' + stack_df['Type']
-
         custom_color_map = {
             'Before - ABANDONED': '#fca5a5',
             'Before - Non-Abandoned Calls': '#bfdbfe',
             'Current - ABANDONED': '#dc2626',
             'Current - Non-Abandoned Calls': '#3b82f6',
         }
-
         fig_stack = px.bar(
-            stack_df,
-            x='DATE',
-            y='Count',
-            color='ColorKey',
+            stack_df, x='DATE', y='Count', color='ColorKey',
             color_discrete_map=custom_color_map,
             title="Total vs Abandoned Calls per Day (Stacked)",
-            height=600,
-            width=1000
+            height=600, width=1000
         )
         fig_stack.update_layout(barmode='stack')
         st.plotly_chart(fig_stack, use_container_width=False)
@@ -234,24 +209,16 @@ def run_voice_sales_dashboard():
             TOTAL_CALLS=('CALLS', 'sum'),
             ABANDONED=('ABANDONED count', 'sum')
         ).reset_index()
-
         hourly_df = hourly.melt(
             id_vars=['HOUR', 'PERIOD'],
             value_vars=['TOTAL_CALLS', 'ABANDONED'],
-            var_name='Type',
-            value_name='Count'
+            var_name='Type', value_name='Count'
         )
-
         fig_hourly = px.bar(
-            hourly_df,
-            x='HOUR',
-            y='Count',
-            color='PERIOD',
-            barmode='group',
-            facet_row='Type',
+            hourly_df, x='HOUR', y='Count', color='PERIOD',
+            barmode='group', facet_row='Type',
             title="Hourly Call vs Abandonment (Before vs Current)",
-            height=700,
-            width=1000
+            height=700, width=1000
         )
         st.plotly_chart(fig_hourly, use_container_width=False)
 

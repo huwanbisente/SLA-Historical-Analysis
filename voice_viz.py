@@ -4,7 +4,6 @@ import plotly.express as px
 import os
 
 def run_voice_dashboard():
-
     # --- CONFIG ---
     DATA_DIR_CURRENT = "Filtered/VOICE_Hourly_SLA"
     DATA_DIR_BEFORE = "Filtered_before/SLA_VOICE HOURLY (New Pod Skills)"
@@ -16,14 +15,14 @@ def run_voice_dashboard():
         except:
             return 0
 
-    # --- Load All CSVs from Folder
+    # --- Load All CSVs from Folder ---
     @st.cache_data
     def load_all_csvs(path):
         all_files = [os.path.join(path, f) for f in os.listdir(path) if f.endswith(".csv")]
         df_list = [pd.read_csv(file) for file in all_files]
         return pd.concat(df_list, ignore_index=True)
 
-    # --- Label dataset origin
+    # --- Label dataset origin ---
     @st.cache_data
     def load_with_period_tag():
         df_now = load_all_csvs(DATA_DIR_CURRENT)
@@ -38,18 +37,18 @@ def run_voice_dashboard():
     try:
         df = load_with_period_tag()
 
-        # --- Parse date and time fields ---
-        df['DATE'] = pd.to_datetime(df['DATE'], format='mixed', dayfirst=True, errors='coerce')
+        # --- Parse date with fallback ---
+        df['DATE'] = pd.to_datetime(df['DATE'], errors='coerce', format='mixed')
+        df.dropna(subset=['DATE'], inplace=True)
 
         # Convert time strings to seconds
         df['QUEUE_TIME (s)'] = df['Average QUEUE WAIT TIME'].astype(str).apply(to_seconds)
         df['HANDLE_TIME (s)'] = df['Average HANDLE TIME'].astype(str).apply(to_seconds)
         df['ACW_TIME (s)'] = df['Average AFTER CALL WORK TIME'].astype(str).apply(to_seconds)
 
-        # Clean and convert service level to float
+        # Clean and convert service level
         df['SERVICE LEVEL (%rec)'] = (
-            df['SERVICE LEVEL (%rec)']
-            .astype(str)
+            df['SERVICE LEVEL (%rec)'].astype(str)
             .str.replace('%', '', regex=False)
             .str.strip()
             .replace('', '0')
@@ -58,12 +57,14 @@ def run_voice_dashboard():
 
         df['ABANDONED count'] = pd.to_numeric(df['ABANDONED count'], errors='coerce').fillna(0).astype(int)
         df['CALLS'] = pd.to_numeric(df['CALLS'], errors='coerce').fillna(0).astype(int)
-
         df['WEEKDAY'] = df['DATE'].dt.day_name()
 
         def get_peak_label(hour_str):
-            hour = int(str(hour_str).split(":")[0])
-            return 'Peak' if 9 <= hour <= 18 else 'Off-Peak'
+            try:
+                hour = int(str(hour_str).split(":")[0])
+                return 'Peak' if 9 <= hour <= 18 else 'Off-Peak'
+            except:
+                return 'Off-Peak'
 
         df['PEAK_LABEL'] = df['HOUR'].apply(get_peak_label)
 
@@ -81,10 +82,10 @@ def run_voice_dashboard():
         max_date = df['DATE'].max()
         date_range = st.sidebar.date_input("Date Range", value=(min_date, max_date), min_value=min_date, max_value=max_date)
 
-        hour_options = sorted(df['HOUR'].unique(), key=lambda x: int(str(x).split(":")[0]))
+        hour_options = sorted(df['HOUR'].dropna().unique(), key=lambda x: int(str(x).split(":")[0]))
         hour_filter = st.sidebar.multiselect("Hour(s)", hour_options, default=hour_options)
 
-        weekday_filter = st.sidebar.multiselect("Weekday(s)", list(df['WEEKDAY'].unique()), default=list(df['WEEKDAY'].unique()))
+        weekday_filter = st.sidebar.multiselect("Weekday(s)", df['WEEKDAY'].unique(), default=list(df['WEEKDAY'].unique()))
         peak_filter = st.sidebar.multiselect("Time Type", ['Peak', 'Off-Peak'], default=['Peak', 'Off-Peak'])
 
         df_filtered = df[
@@ -104,7 +105,6 @@ def run_voice_dashboard():
             AVG_ACW=('ACW_TIME (s)', 'mean'),
             AVG_SLVL=('SERVICE LEVEL (%rec)', 'mean')
         ).reset_index()
-
         daily['% ABANDONED'] = (daily['ABANDONED'] / daily['TOTAL_CALLS']) * 100
 
         # --- Summary Metrics ---
@@ -139,51 +139,21 @@ def run_voice_dashboard():
 
         # --- Abandonment Trend
         st.markdown("### ❌ Abandonment % Trend")
-        fig_abd = px.line(
-            daily,
-            x='DATE',
-            y='% ABANDONED',
-            color='PERIOD',
-            markers=True,
-            title="Abandonment Rate Over Time",
-            width=1000
-        )
-        st.plotly_chart(fig_abd, use_container_width=False)
+        st.plotly_chart(px.line(daily, x='DATE', y='% ABANDONED', color='PERIOD', markers=True, title="Abandonment Rate Over Time", width=1000), use_container_width=False)
 
         # --- Average ACW Trend
         st.markdown("### 🧾 Average ACW Trend")
-        fig_acw = px.line(
-            daily,
-            x='DATE',
-            y='AVG_ACW',
-            color='PERIOD',
-            title="ACW Trend Over Time",
-            markers=True,
-            labels={'AVG_ACW': 'ACW (s)'},
-            width=1000
-        )
-        st.plotly_chart(fig_acw, use_container_width=False)
+        st.plotly_chart(px.line(daily, x='DATE', y='AVG_ACW', color='PERIOD', title="ACW Trend Over Time", markers=True, labels={'AVG_ACW': 'ACW (s)'}, width=1000), use_container_width=False)
 
         # --- Service Level Trend
         st.markdown("### 🎯 Service Level Trend")
-        fig_slvl = px.line(
-            daily,
-            x='DATE',
-            y='AVG_SLVL',
-            color='PERIOD',
-            title="Service Level (%) Over Time",
-            markers=True,
-            width=1000
-        )
-        st.plotly_chart(fig_slvl, use_container_width=False)
+        st.plotly_chart(px.line(daily, x='DATE', y='AVG_SLVL', color='PERIOD', title="Service Level (%) Over Time", markers=True, width=1000), use_container_width=False)
 
-        # --- Volume Heatmap by Hour and Weekday
+        # --- Volume Heatmap
         st.markdown("### 🔥 Call Volume Heatmap by Hour and Weekday")
         heat_df = df_filtered.groupby(['PERIOD', 'WEEKDAY', 'HOUR'])['CALLS'].sum().reset_index()
-
         for period in heat_df['PERIOD'].unique():
-            st.markdown(f"#### 📅 {period} Period")
-            fig_heat = px.density_heatmap(
+            fig = px.density_heatmap(
                 heat_df[heat_df['PERIOD'] == period],
                 x='HOUR',
                 y='WEEKDAY',
@@ -193,66 +163,30 @@ def run_voice_dashboard():
                 width=1000,
                 height=500
             )
-            st.plotly_chart(fig_heat, use_container_width=False)
+            st.markdown(f"#### 📅 {period} Period")
+            st.plotly_chart(fig, use_container_width=False)
 
-        # --- Stacked Bar for Abandonment
+        # --- Stacked Abandonment Bar
         st.markdown("### 📊 Total vs Abandoned Calls per Day (Stacked View)")
         stack_df = daily.copy()
         stack_df['Non-Abandoned Calls'] = stack_df['TOTAL_CALLS'] - stack_df['ABANDONED']
-
-        stack_df = stack_df.melt(
-            id_vars=['DATE', 'PERIOD'],
-            value_vars=['ABANDONED', 'Non-Abandoned Calls'],
-            var_name='Type',
-            value_name='Count'
-        )
+        stack_df = stack_df.melt(id_vars=['DATE', 'PERIOD'], value_vars=['ABANDONED', 'Non-Abandoned Calls'], var_name='Type', value_name='Count')
         stack_df['ColorKey'] = stack_df['PERIOD'] + ' - ' + stack_df['Type']
-
         custom_color_map = {
             'Before - ABANDONED': '#fca5a5',
             'Before - Non-Abandoned Calls': '#bfdbfe',
             'Current - ABANDONED': '#dc2626',
             'Current - Non-Abandoned Calls': '#3b82f6',
         }
-
-        fig_stack = px.bar(
-            stack_df,
-            x='DATE',
-            y='Count',
-            color='ColorKey',
-            color_discrete_map=custom_color_map,
-            title="Total vs Abandoned Calls per Day (Stacked)",
-            height=600,
-            width=1000
-        )
+        fig_stack = px.bar(stack_df, x='DATE', y='Count', color='ColorKey', color_discrete_map=custom_color_map, title="Total vs Abandoned Calls per Day (Stacked)", height=600, width=1000)
         fig_stack.update_layout(barmode='stack')
         st.plotly_chart(fig_stack, use_container_width=False)
 
         # --- Hourly Aggregation
         st.markdown("### ⏱️ Hourly Metrics (Combined View)")
-        hourly = df_filtered.groupby(['HOUR', 'PERIOD']).agg(
-            TOTAL_CALLS=('CALLS', 'sum'),
-            ABANDONED=('ABANDONED count', 'sum')
-        ).reset_index()
-
-        hourly_df = hourly.melt(
-            id_vars=['HOUR', 'PERIOD'],
-            value_vars=['TOTAL_CALLS', 'ABANDONED'],
-            var_name='Type',
-            value_name='Count'
-        )
-
-        fig_hourly = px.bar(
-            hourly_df,
-            x='HOUR',
-            y='Count',
-            color='PERIOD',
-            barmode='group',
-            facet_row='Type',
-            title="Hourly Call vs Abandonment (Before vs Current)",
-            height=700,
-            width=1000
-        )
+        hourly = df_filtered.groupby(['HOUR', 'PERIOD']).agg(TOTAL_CALLS=('CALLS', 'sum'), ABANDONED=('ABANDONED count', 'sum')).reset_index()
+        hourly_df = hourly.melt(id_vars=['HOUR', 'PERIOD'], value_vars=['TOTAL_CALLS', 'ABANDONED'], var_name='Type', value_name='Count')
+        fig_hourly = px.bar(hourly_df, x='HOUR', y='Count', color='PERIOD', barmode='group', facet_row='Type', title="Hourly Call vs Abandonment (Before vs Current)", height=700, width=1000)
         st.plotly_chart(fig_hourly, use_container_width=False)
 
     except Exception as e:
