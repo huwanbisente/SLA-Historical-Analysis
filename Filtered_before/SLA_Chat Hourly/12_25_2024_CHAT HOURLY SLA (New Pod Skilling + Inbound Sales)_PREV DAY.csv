@@ -1,0 +1,62 @@
+DATE,HOUR,SKILL,CAMPAIGN,DISPOSITION,INTERACTIONS,CHAT QUEUE TIME,HANDLE TIME,AFTER CHAT WORK
+2024/12/24,02:00,EOT Delivered - Chat,Chat_Awara,Abandon,1,00:20:57,00:00:00,00:00:00
+2024/12/24,02:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:43:36,00:00:00,00:00:00
+2024/12/24,04:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:04:41,00:00:00,00:00:00
+2024/12/24,05:00,In Transit - Chat,Chat_Awara,Abandon,1,00:10:04,00:00:00,00:00:00
+2024/12/24,05:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:07:33,00:00:00,00:00:00
+2024/12/24,05:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:06:14,00:00:00,00:00:00
+2024/12/24,05:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:05:50,00:00:00,00:00:00
+2024/12/24,05:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:04:59,00:00:00,00:00:00
+2024/12/24,05:00,Pre Transit - Chat,Chat_Awara,Abandon,1,00:05:04,00:00:00,00:00:00
+2024/12/24,06:00,Early Returns - Chat,Chat_Awara,Abandon,1,00:06:17,00:00:00,00:00:00
+2024/12/24,06:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:52,00:00:00,00:00:00
+2024/12/24,06:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:06:11,00:00:00,00:00:00
+2024/12/24,07:00,Delivered - Chat,Chat_Siena,Abandon,1,00:07:52,00:00:00,00:00:00
+2024/12/24,07:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:12:23,00:00:00,00:00:00
+2024/12/24,07:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:03:55,00:00:00,00:00:00
+2024/12/24,08:00,Delivered - Chat,Chat_Siena,Abandon,1,00:09:43,00:00:00,00:00:00
+2024/12/24,08:00,Delivered - Chat,Chat_Siena,Abandon,1,00:14:37,00:00:00,00:00:00
+2024/12/24,08:00,Delivered - Chat,Chat_Siena,Abandon,1,00:03:37,00:00:00,00:00:00
+2024/12/24,08:00,Early Returns - Chat,Chat_Siena,Abandon,1,00:04:42,00:00:00,00:00:00
+2024/12/24,08:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:58,00:00:00,00:00:00
+2024/12/24,09:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:06:11,00:00:00,00:00:00
+2024/12/24,09:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:04:39,00:00:00,00:00:00
+2024/12/24,09:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:36:16,00:00:00,00:00:00
+2024/12/24,09:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:04:07,00:00:00,00:00:00
+2024/12/24,09:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:13:41,00:00:00,00:00:00
+2024/12/24,10:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:21:12,00:00:00,00:00:00
+2024/12/24,10:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:05:04,00:00:00,00:00:00
+2024/12/24,10:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:03:52,00:00:00,00:00:00
+2024/12/24,10:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:09:29,00:00:00,00:00:00
+2024/12/24,11:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:04:03,00:00:00,00:00:00
+2024/12/24,11:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:03:08,00:00:00,00:00:00
+2024/12/24,11:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:15:33,00:00:00,00:00:00
+2024/12/24,11:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:05:44,00:00:00,00:00:00
+2024/12/24,11:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:05:12,00:00:00,00:00:00
+2024/12/24,12:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:04:55,00:00:00,00:00:00
+2024/12/24,12:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:04:52,00:00:00,00:00:00
+2024/12/24,12:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:15:36,00:00:00,00:00:00
+2024/12/24,12:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:05:44,00:00:00,00:00:00
+2024/12/24,12:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:05:09,00:00:00,00:00:00
+2024/12/24,12:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:05:51,00:00:00,00:00:00
+2024/12/24,13:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:25,00:00:00,00:00:00
+2024/12/24,13:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:04:39,00:00:00,00:00:00
+2024/12/24,14:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:07:44,00:00:00,00:00:00
+2024/12/24,14:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:05:05,00:00:00,00:00:00
+2024/12/24,15:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:26:46,00:00:00,00:00:00
+2024/12/24,15:00,Inbound Sales - Chat,Chat_Awara,Abandon,1,00:20:50,00:00:00,00:00:00
+2024/12/24,15:00,Pre-Transit_Cancellations - Chat,Chat_Siena,Abandon,1,00:04:06,00:00:00,00:00:00
+2024/12/24,16:00,Early Returns - Chat,Chat_Awara,Abandon,1,00:03:55,00:00:00,00:00:00
+2024/12/24,16:00,Early Returns - Chat,Chat_Siena,Abandon,1,01:09:50,00:00:00,00:00:00
+2024/12/24,16:00,Early Returns - Chat,Chat_Siena,Abandon,1,00:15:46,00:00:00,00:00:00
+2024/12/24,16:00,Early Returns - Chat,Chat_Awara,Abandon,1,00:03:25,00:00:00,00:00:00
+2024/12/24,16:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:05:35,00:00:00,00:00:00
+2024/12/24,16:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:04:10,00:00:00,00:00:00
+2024/12/24,16:00,Pre-Transit_Cancellations - Chat,Chat_Awara,Abandon,1,00:07:01,00:00:00,00:00:00
+2024/12/24,17:00,Early Returns - Chat,Chat_Awara,Abandon,1,00:04:17,00:00:00,00:00:00
+2024/12/24,18:00,Delivered - Chat,Chat_Awara,Abandon,1,00:06:07,00:00:00,00:00:00
+2024/12/24,18:00,Delivered - Chat,Chat_Awara,Abandon,1,00:08:36,00:00:00,00:00:00
+2024/12/24,20:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:12,00:00:00,00:00:00
+2024/12/24,22:00,Delivered - Chat,Chat_Awara,Abandon,1,00:09:31,00:00:00,00:00:00
+2024/12/24,22:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:52,00:00:00,00:00:00
+2024/12/24,23:00,Early Returns - Chat,Chat_Awara,Abandon,1,00:05:06,00:00:00,00:00:00

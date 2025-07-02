@@ -1,0 +1,11 @@
+DATE,HOUR,SKILL,CAMPAIGN,DISPOSITION,INTERACTIONS,CHAT QUEUE TIME,HANDLE TIME,AFTER CHAT WORK
+2024/12/25,03:00,Inbound Sales - Chat,Chat_Siena,Abandon,1,00:03:40,00:00:00,00:00:00
+2024/12/25,06:00,Inbound Sales - Chat,Chat_Siena,[Not Defined],1,,00:00:00,00:00:00
+2024/12/25,08:00,Inbound Sales - Chat,Chat_Siena,[Not Defined],1,,00:00:01,00:00:00
+2024/12/25,10:00,Inbound Sales - Chat,Chat_Siena,Sales- Sellable- Offer Made- Not Sold,1,,00:36:20,00:00:00
+2024/12/25,10:00,Inbound Sales - Chat,Chat_Siena,[Not Defined],1,,00:00:00,00:00:00
+2024/12/25,11:00,Inbound Sales - Chat,Chat_Awara,No Response Needed,1,,00:00:03,00:00:00
+2024/12/25,11:00,Inbound Sales - Chat,Chat_Awara,[Not Defined],1,,00:00:00,00:00:00
+2024/12/25,15:00,Inbound Sales - Chat,Chat_Awara,Order Details Question,1,,00:13:59,00:00:00
+2024/12/25,21:00,Early Returns - Chat,Chat_Awara,Unresponsive Customer,1,00:00:02,00:08:26,00:01:58
+2024/12/25,21:00,Inbound Sales - Chat,Chat_Siena,Product Inquiry,1,00:00:02,00:12:43,00:00:40
